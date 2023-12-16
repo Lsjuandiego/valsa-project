@@ -1,8 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:localstorage/localstorage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/apartamento.dart';
 import '../utils/get_storage_instance.dart';
 import 'apartamentos_controller.dart';
