@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'login_controller.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final LoginController _loginController = LoginController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  LoginScreen({Key? key}) : super(key: key);
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +64,19 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
+                  setState(() {
+                    _isLoading = true; // Activar animación de carga
+                  });
+
                   String email = emailController.text;
                   String password = passwordController.text;
 
-                  bool loggedIn = await _loginController.loginUser(email, password);
+                  bool loggedIn =
+                  await _loginController.loginUser(email, password);
+                  setState(() {
+                    _isLoading = false; // Detener animación de carga
+                  });
+
                   if (loggedIn) {
                     Navigator.pushReplacementNamed(context, '/home');
                   } else {
@@ -84,6 +100,15 @@ class LoginScreen extends StatelessWidget {
                 },
                 child: const Text('Iniciar sesión'),
               ),
+              _isLoading
+                  ? const Padding(
+                padding: EdgeInsets.all(20),
+                child: SpinKitFadingCube(
+                  color: Colors.blue,
+                  size: 50.0,
+                ),
+              )
+                  : SizedBox(), // Mostrar animación de carga si _isLoading es true
             ],
           ),
         ),
@@ -91,4 +116,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-

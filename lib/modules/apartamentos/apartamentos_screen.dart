@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../models/apartamento.dart';
 import 'apartamentos_controller.dart';
 import 'mock_data.dart';
@@ -23,18 +24,19 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
 
   Future<void> fetchApartamentos() async {
     try {
-      // Acá debo pasar el token del usuario logueado
+      // Acá debes pasar el token del usuario logueado
       const token = '1|3aPb9a7vOcJigsE9yolbeRdTdK83z8VUv0cu3Mu44a5299a8';
       final apartamentos =
       await _apartamentosController.fetchApartamentos(token);
       setState(() {
         _apartamentos = apartamentos;
-        _isLoading = false;
+        _isLoading = false; // Indica que la carga ha finalizado
       });
     } catch (e) {
+      // Manejo de errores
       print('Error: $e');
       setState(() {
-        _isLoading = false;
+        _isLoading = false; // Indica que la carga ha finalizado incluso si hubo un error
       });
     }
   }
@@ -46,9 +48,11 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
         title: const Text('Área de Apartamentos'),
       ),
       body: _isLoading
-          ? Center(
-        // Muestra la animación de carga si está cargando
-        child: CircularProgressIndicator(),
+          ? const Center(
+        child: SpinKitFadingCube(
+          color: Colors.blue,
+          size: 50.0,
+        ),
       )
           : ListView.builder(
         itemCount: _apartamentos.length,
@@ -62,8 +66,10 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Empresa: ${getEmpresaName(apartamento.empresasId)}'),
-                  Text('Limpieza: \$${apartamento.valorLimpieza.toString()}'),
+                  Text(
+                      'Empresa: ${getEmpresaName(apartamento.empresasId)}'),
+                  Text(
+                      'Limpieza: \$${apartamento.valorLimpieza.toString()}'),
                 ],
               ),
               onTap: () {
