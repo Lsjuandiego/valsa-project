@@ -10,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _obscureText = true;
   final LoginController _loginController = LoginController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -49,10 +50,20 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: _obscureText, // Aquí se utiliza una variable para controlar la visibilidad de la contraseña
+                decoration: InputDecoration(
                   labelText: 'Contraseña',
                   border: OutlineInputBorder(),
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _obscureText = !_obscureText; // Cambia el estado para alternar la visibilidad de la contraseña
+                      });
+                    },
+                    child: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty || value.length < 6) {
@@ -61,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
+
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
@@ -97,8 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.of(context).pop();
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.blue,
-                                onPrimary: Colors.white,
+                                foregroundColor: Colors.blue,
                               ),
                               child: Text('OK'),
                             ),
