@@ -23,16 +23,19 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
 
   Future<void> fetchApartamentos() async {
     try {
-      // Mock para simular una solicitud asíncrona
-      await Future.delayed(Duration(seconds: 2));
-      final apartamentos = getApartamentosMockData();
+      // Acá debo pasar el token del usuario logueado
+      const token = '1|3aPb9a7vOcJigsE9yolbeRdTdK83z8VUv0cu3Mu44a5299a8';
+      final apartamentos =
+      await _apartamentosController.fetchApartamentos(token);
       setState(() {
         _apartamentos = apartamentos;
-        _isLoading = false; // Cambia a false cuando se completa la carga
+        _isLoading = false;
       });
     } catch (e) {
-      // Manejo de errores
       print('Error: $e');
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -44,14 +47,16 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
       ),
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(), // Animación de carga
+        // Muestra la animación de carga si está cargando
+        child: CircularProgressIndicator(),
       )
           : ListView.builder(
         itemCount: _apartamentos.length,
         itemBuilder: (context, index) {
           final apartamento = _apartamentos[index];
           return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            margin:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ListTile(
               title: Text(apartamento.nombreApartamento),
               subtitle: Column(
@@ -79,4 +84,3 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
     return 'Nombre de Empresa $empresaId';
   }
 }
-
