@@ -7,7 +7,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Simulación de usuario (puedes reemplazar esto con la lógica real de usuario)
     const String userName = 'Juan David Valencia Salgado';
     const String userEmail = 'judvalenciasa@gmail.com';
 
@@ -25,7 +24,7 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 10), // Espacio adicional arriba
+                  SizedBox(height: 10),
                   Text(
                     userName,
                     style: TextStyle(
@@ -33,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(height: 3), // Ajuste de espacio entre los textos
+                  SizedBox(height: 3),
                   Text(
                     userEmail,
                     style: TextStyle(
@@ -47,8 +46,8 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               title: const Row(
                 children: [
-                  Icon(Icons.logout), // Icono de logout junto al texto
-                  SizedBox(width: 10), // Espacio entre el icono y el texto
+                  Icon(Icons.logout),
+                  SizedBox(width: 10),
                   Text('Cerrar sesión'),
                 ],
               ),
@@ -57,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
-                      (Route<dynamic> route) => false, // Eliminar todas las rutas anteriores
+                      (Route<dynamic> route) => false,
                 );
               },
             ),
@@ -71,9 +70,31 @@ class HomeScreen extends StatelessWidget {
             SizedBox(
               height: 200,
               width: 200,
-              child: Image.asset(
-                'lib/assets/images/valsa.png',
-                fit: BoxFit.contain,
+              child: Stack(
+                children: [
+                  Image.asset(
+                    'lib/assets/images/valsa.png',
+                    fit: BoxFit.contain,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.black.withOpacity(0.6),
+                      child: const Text(
+                        'Modulos',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 20),
@@ -93,6 +114,9 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+
+
+
     );
   }
 
@@ -101,10 +125,11 @@ class HomeScreen extends StatelessWidget {
     return Card(
       elevation: 3,
       margin: EdgeInsets.all(10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Bordes redondeados
+      ),
       child: InkWell(
         onTap: () {
-          // Acciones cuando se selecciona un módulo, si es necesario
-          // Por ejemplo, podrías navegar a la pantalla correspondiente
           if (moduleName == 'Apartamentos') {
             Navigator.push(
               context,
@@ -112,20 +137,36 @@ class HomeScreen extends StatelessWidget {
             );
           }
         },
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Text(
-              moduleName,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.blue.withOpacity(0.7), Colors.blue.withOpacity(0.5)],
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                const SizedBox(height: 10),
+                Text(
+                  moduleName,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
   }
+
 }
