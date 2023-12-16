@@ -17,42 +17,30 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const DrawerHeader(
+            const UserAccountsDrawerHeader(
+              accountName: Text(
+                userName,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              accountEmail: Text(
+                userEmail,
+                style: TextStyle(fontSize: 16),
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.person,
+                  color: Colors.blue,
+                ),
+              ),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10),
-                  Text(
-                    userName,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  SizedBox(height: 3),
-                  Text(
-                    userEmail,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
             ),
             ListTile(
-              title: const Row(
-                children: [
-                  Icon(Icons.logout),
-                  SizedBox(width: 10),
-                  Text('Cerrar sesión'),
-                ],
-              ),
+              leading: Icon(Icons.logout),
+              title: Text('Cerrar sesión'),
               onTap: () {
-                // Navegar al inicio de sesión al presionar "Cerrar sesión"
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -63,6 +51,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -126,14 +115,14 @@ class HomeScreen extends StatelessWidget {
       elevation: 3,
       margin: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15), // Bordes redondeados
+        borderRadius: BorderRadius.circular(15),
       ),
       child: InkWell(
         onTap: () {
           if (moduleName == 'Apartamentos') {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ApartamentosScreen()), // Navega a la pantalla de Apartamentos
+              MaterialPageRoute(builder: (context) => ApartamentosScreen()),
             );
           }
         },
@@ -168,5 +157,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
 }

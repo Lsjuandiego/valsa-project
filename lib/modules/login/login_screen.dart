@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: () async {
                   setState(() {
-                    _isLoading = true; // Activar animación de carga
+                    _isLoading = true;
                   });
 
                   String email = emailController.text;
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   bool loggedIn =
                   await _loginController.loginUser(email, password);
                   setState(() {
-                    _isLoading = false; // Detener animación de carga
+                    _isLoading = false;
                   });
 
                   if (loggedIn) {
@@ -84,12 +84,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Credenciales no válidas'),
+                          title: Text(
+                            'Credenciales no válidas',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          content: Text(
+                            'El correo electrónico o la contraseña son incorrectos. Por favor, inténtalo de nuevo.',
+                          ),
                           actions: [
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue,
+                                onPrimary: Colors.white,
+                              ),
                               child: Text('OK'),
                             ),
                           ],
@@ -108,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   size: 50.0,
                 ),
               )
-                  : SizedBox(), // Mostrar animación de carga si _isLoading es true
+                  : SizedBox(),
             ],
           ),
         ),
