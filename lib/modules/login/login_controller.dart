@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../utils/get_storage_instance.dart';
 import 'login_service.dart';
 
 class LoginController {
@@ -9,26 +10,43 @@ class LoginController {
     try {
       final result = await _authService.login(email, password);
       if (result['res'] == true) {
-        // Guardar datos del usuario en SharedPreferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('userName', result['user']['name']);
-        prefs.setString('userEmail', result['user']['email']);
+        dynamic storage = getStorageInstance();
 
-        return true; // Credenciales válidas, se permite el acceso
+        if (kIsWeb) {
+          await storage.ready;
+          await storage.setItem('userName', result['user']['name']);
+          await storage.setItem('userEmail', result['user']['email']);
+          await storage.setItem('token', result['token']);
+        } else {
+          SharedPreferences prefs = await storage;
+          prefs.setString('userName', result['user']['name']);
+          prefs.setString('userEmail', result['user']['email']);
+          prefs.setString('token', result['token']);
+        }
+
+        return true;
       } else {
-        return false; // Credenciales inválidas
+        return false;
       }
     } catch (e) {
-      // Manejo de errores
       print('Error: $e');
-      return false; // Credenciales inválidas por error de conexión u otro motivo
+      return false;
     }
   }
 
   Future<Map<String, String>> getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userName = prefs.getString('userName') ?? 'Usuario Ejemplo';
-    final String userEmail = prefs.getString('userEmail') ?? 'usuario@example.com';
-    return {'userName': userName, 'userEmail': userEmail};
+    dynamic storage = getStorageInstance();
+
+    if (kIsWeb) {
+      await storage.ready;
+      final userName = storage.getItem('userName') ?? 'Usuario Ejemplo';
+      final userEmail = storage.getItem('userEmail') ?? 'usuario@example.com';
+      return {'userName': userName, 'userEmail': userEmail};
+    } else {
+      SharedPreferences prefs = await storage;
+      final userName = prefs.getString('userName') ?? 'Usuario Ejemplo';
+      final userEmail = prefs.getString('userEmail') ?? 'usuario@example.com';
+      return {'userName': userName, 'userEmail': userEmail};
+    }
   }
 }
