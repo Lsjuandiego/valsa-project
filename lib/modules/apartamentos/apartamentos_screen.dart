@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/apartamento.dart';
 import 'apartamentos_controller.dart';
 import 'mock_data.dart';
@@ -24,20 +27,33 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
 
   Future<void> fetchApartamentos() async {
     try {
-      // Acá debes pasar el token del usuario logueado
-      const token = '1|3aPb9a7vOcJigsE9yolbeRdTdK83z8VUv0cu3Mu44a5299a8';
+      final token = await getToken();
       final apartamentos =
       await _apartamentosController.fetchApartamentos(token);
       setState(() {
         _apartamentos = apartamentos;
-        _isLoading = false; // Indica que la carga ha finalizado
+        _isLoading = false;
       });
     } catch (e) {
       // Manejo de errores
       print('Error: $e');
       setState(() {
-        _isLoading = false; // Indica que la carga ha finalizado incluso si hubo un error
+        _isLoading = false;
       });
+    }
+  }
+
+  Future<String> getToken() async {
+    if (kIsWeb) {
+      final localStorage = LocalStorage('my_web_storage');
+      await localStorage.ready;
+
+      final token = localStorage.getItem('token');
+      print('este es el token: $token');
+      return token ?? '';
+    } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      return prefs.getString('token') ?? '';
     }
   }
 
