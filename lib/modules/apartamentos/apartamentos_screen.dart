@@ -44,19 +44,7 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
     }
   }
 
-  Future<String> getToken() async {
-    dynamic storage = getStorageInstance();
-    if (kIsWeb) {
-      LocalStorage webStorage = storage;
-      await webStorage.ready;
-      final token = webStorage.getItem('token');
-      print('este es el token: $token');
-      return token ?? '';
-    } else {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      return prefs.getString('token') ?? '';
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
