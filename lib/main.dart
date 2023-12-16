@@ -16,11 +16,20 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => LoginScreen(),
-        '/home': (context) =>  HomeScreen(),
+      initialRoute: '/login',
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/':
+            return MaterialPageRoute(builder: (_) =>  LoginScreen());
+          case '/home':
+            return MaterialPageRoute(builder: (_) =>  HomeScreen());
+          case '/login':
+            return MaterialPageRoute(builder: (_) =>  LoginScreen());
+          default:
+            return MaterialPageRoute(builder: (_) =>  LoginScreen());
+        }
       },
     );
   }
 }
+

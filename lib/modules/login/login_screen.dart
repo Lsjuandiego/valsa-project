@@ -50,14 +50,14 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: passwordController,
-                obscureText: _obscureText, // Aquí se utiliza una variable para controlar la visibilidad de la contraseña
+                obscureText: _obscureText,
                 decoration: InputDecoration(
                   labelText: 'Contraseña',
                   border: OutlineInputBorder(),
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
-                        _obscureText = !_obscureText; // Cambia el estado para alternar la visibilidad de la contraseña
+                        _obscureText = !_obscureText;
                       });
                     },
                     child: Icon(
