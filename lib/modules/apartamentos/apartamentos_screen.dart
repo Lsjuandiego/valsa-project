@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/apartamento.dart';
+import '../utils/get_storage_instance.dart';
 import 'apartamentos_controller.dart';
 import 'mock_data.dart';
 
@@ -44,11 +45,11 @@ class _ApartamentosScreenState extends State<ApartamentosScreen> {
   }
 
   Future<String> getToken() async {
+    dynamic storage = getStorageInstance();
     if (kIsWeb) {
-      final localStorage = LocalStorage('my_web_storage');
-      await localStorage.ready;
-
-      final token = localStorage.getItem('token');
+      LocalStorage webStorage = storage;
+      await webStorage.ready;
+      final token = webStorage.getItem('token');
       print('este es el token: $token');
       return token ?? '';
     } else {

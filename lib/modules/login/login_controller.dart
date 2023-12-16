@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/get_storage_instance.dart';
 import 'login_service.dart';
@@ -49,4 +50,19 @@ class LoginController {
       return {'userName': userName, 'userEmail': userEmail};
     }
   }
+
+  void logoutUser() async {
+    dynamic storage = getStorageInstance();
+
+    if (kIsWeb) {
+      LocalStorage webStorage = storage;
+      await webStorage.ready;
+      webStorage.deleteItem('token');
+    } else {
+      SharedPreferences prefs = await storage;
+      prefs.remove('token');
+    }
+
+  }
+
 }

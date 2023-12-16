@@ -60,6 +60,7 @@ class HomeScreen extends StatelessWidget {
                     leading: Icon(Icons.logout),
                     title: Text('Cerrar sesión'),
                     onTap: () {
+                      _loginController.logoutUser();
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => LoginScreen()),
